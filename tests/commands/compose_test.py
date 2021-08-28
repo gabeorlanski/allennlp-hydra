@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import json
 
 from allennlp.commands import Subcommand
@@ -26,7 +24,7 @@ class TestComposeCommand(BaseTestCase):
         """
         result = compose_config.compose_config(
             config_path=str(
-                self.FIXTURES_ROOT.joinpath("conf").relative_to(Path.cwd())
+                self.FIXTURES_ROOT.joinpath("conf")
             ),
             config_name="simple_config",
             serialization_dir=str(self.TEST_DIR.absolute().resolve()),
