@@ -1,0 +1,19 @@
+name: allennlp-hydra
+
+channel:
+  - conda-forge
+  - pytorch
+
+dependencies:
+    - python>=3.7
+    - pip==21.2.2
+    - pytest>=6.2.2
+    - numpy
+    - pytorch
+    - coverage>=5.5
+    - pre-commit==2.13.0
+    - pip:
+        - allennlp >= 2.6.0
+        - hydra-core>=1.1.1
+        - overrides>=3.1.0
+        - omegaconf>=2.1
