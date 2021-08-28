@@ -8,7 +8,7 @@ extra_css:
 theme:
   name: material
   palette:
-    primary: deep orange
+    primary: green
     accent: grey
   logo: img/favicon.ico
   favicon: img/favicon.ico
