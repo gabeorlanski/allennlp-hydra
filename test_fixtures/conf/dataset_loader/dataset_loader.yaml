@@ -1,2 +1,2 @@
 defaults:
-  - batch_sampler/bucket_batch_sampler
+  - batch_sampler: bucket_batch_sampler

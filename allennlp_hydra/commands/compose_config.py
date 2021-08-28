@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Union, List
 
 import argparse
 import json
@@ -42,6 +42,12 @@ class ComposeConfig(Subcommand):
             help="Directory to save the config to. The name of the config will "
                  "be `{config_name}.json`",
         )
+        subparser.add_argument(
+            "overrides",
+            nargs="*",
+            help="Any key=value arguments to override config values "
+                 "(use dots for.nested=overrides)",
+        )
         subparser.set_defaults(func=compose_config_from_args)
 
         return subparser
@@ -68,9 +74,15 @@ def compose_config_from_args(args: argparse.Namespace) -> Dict:
 
 
 def compose_config(
-        config_path: Union[str, PathLike], config_name: str, job_name: str,
-        serialization_dir: Union[str, PathLike]
+        config_path: Union[str, PathLike],
+        config_name: str,
+        job_name: str,
+        serialization_dir: Union[str, PathLike],
+        config_overrides: List[str] = None
 ) -> Dict:
+    if config_overrides is None:
+        config_overrides = []
+
     # Make the config path relative to the location of THIS file. I.E. make it
     # relative to the `allennlp_hydra/commands` subdirectory.
     config_path = Path(config_path).absolute().resolve()
@@ -81,7 +93,7 @@ def compose_config(
 
     # Compose the config with hydra.
     with hydra.initialize_config_dir(config_dir=str(config_path), job_name=job_name):
-        cfg = hydra.compose(config_name=config_name)
+        cfg = hydra.compose(config_name=config_name, overrides=config_overrides)
 
     # cfg is a `DictConfig` object, so we need to convert it to a normal dict
     # using OmegaConf in order to save it.

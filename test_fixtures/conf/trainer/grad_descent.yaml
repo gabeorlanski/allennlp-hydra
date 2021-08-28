@@ -1,5 +1,6 @@
 defaults:
-  - learning_rate_scheduler/noam
+  - _self_
+  - learning_rate_scheduler: noam
 num_epochs: 1
 grad_norm: 1.0
 patience: 500
