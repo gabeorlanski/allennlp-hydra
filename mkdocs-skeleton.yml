@@ -1,6 +1,6 @@
 site_name: AllenNLP Hydra
 site_description: AllenNLP Hydra is a plugin to make allennlp work with hydra.
-site_url: N/A
+site_url: https://allennlphydra.readthedocs.io
 
 extra_css:
   - "css/extra.css"

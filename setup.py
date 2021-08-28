@@ -16,7 +16,7 @@ setuptools.setup(
         exclude=["*.tests", "*.tests.*", "tests.*", "tests", "test_*"],
     ),
     project_urls={
-        "Documentation": "https://ssljax.readthedocs.io/en/stable",
+        "Documentation": "https://allennlphydra.readthedocs.io/en/stable",
         "Source Code"  : "https://github.com/gabeorlanski/pathml",
     },
     install_requires=["allennlp>=2.6.0",
