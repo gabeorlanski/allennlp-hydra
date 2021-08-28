@@ -1,0 +1,5 @@
+defaults:
+  - dataset_reader/sequence_tagging
+  - trainer/trainer
+  - model/basic_classifier
+  - dataset_loader/dataset_loader

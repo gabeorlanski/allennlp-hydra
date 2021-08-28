@@ -1,3 +1,5 @@
 allennlp>=2.6.0
-hydra>=1.1.1
+hydra-core>=1.1.1
 pytest
+overrides>=3.1.0
+omegaconf>=2.1

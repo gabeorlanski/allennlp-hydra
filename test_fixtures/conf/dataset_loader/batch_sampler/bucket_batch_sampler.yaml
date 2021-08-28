@@ -1,0 +1,4 @@
+type: bucket
+sorting_keys: ["tokens"]
+padding_noise: 0.0
+batch_size: 80

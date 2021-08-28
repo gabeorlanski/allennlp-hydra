@@ -1,0 +1,47 @@
+{
+    "dataset_loader": {
+        "batch_sampler": {
+            "batch_size": 80,
+            "padding_noise": 0.0,
+            "sorting_keys": ["tokens"],
+            "type": "bucket"
+        }
+    },
+    "dataset_reader": {
+        "type": "sequence_tagging",
+        "word_tag_delimiter": "##"
+    },
+    "model": {
+        "text_field_embedder": [
+            {
+                "token_embedders": [
+                    {
+                        "tokens": [
+                            {
+                                "type": "embedding"
+                            }, {
+                                "vocab_namespace": "source_tokens"
+                            }, {
+                                "embedding_dim": 512
+                            }, {
+                                "trainable": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "type": "basic_classifier"
+    },
+    "trainer": {
+        "cuda_device": -1,
+        "grad_norm": 1.0,
+        "learning_rate_scheduler": {
+            "model_size": 1024,
+            "type": "noam",
+            "warmup_steps": 5
+        },
+        "num_epochs": 1,
+        "patience": 500
+    }
+}
