@@ -1,3 +1,4 @@
+[comment]: <> (This is a copy of AllenNLP's `CONTRIBUTING.md` file)
 # Contributing
 
 Thanks for considering contributing!  We want AllenNLP to be *the way* to do cutting-edge NLP research, but we cannot

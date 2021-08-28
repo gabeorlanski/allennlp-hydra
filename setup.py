@@ -20,7 +20,8 @@ setuptools.setup(
     },
     install_requires=[
         "allennlp",
-        "hydra"
+        "hydra",
+        "pytest"
     ],
     requires_python=">=3.7",
     classifiers=[
