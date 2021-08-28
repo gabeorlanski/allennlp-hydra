@@ -1,5 +1,8 @@
 # AllenNLP-Hydra
 
+**NOTE** there is no affiliation between this project and AllenNLP or the Allen 
+Institute for AI. 
+
 Plugin For [AllenNLP](https://github.com/allenai/allennlp) that enables 
 composing configs through the use of the 
 [Hydra Library from Facebook Research](https://github.com/facebookresearch/hydra).

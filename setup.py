@@ -12,17 +12,13 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(
-        exclude=["*.tests", "*.tests.*", "tests.*", "tests","test_*"],
+        exclude=["*.tests", "*.tests.*", "tests.*", "tests", "test_*"],
     ),
     project_urls={
         "Documentation": "https://ssljax.readthedocs.io/en/stable",
-        "Source Code"  : "https://github.com/gabeorlanski/pathml",
+        "Source Code": "https://github.com/gabeorlanski/pathml",
     },
-    install_requires=[
-        "allennlp",
-        "hydra",
-        "pytest"
-    ],
+    install_requires=["allennlp", "hydra", "pytest"],
     requires_python=">=3.7",
     classifiers=[
         "Intended Audience :: Science/Research",

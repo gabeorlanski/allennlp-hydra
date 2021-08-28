@@ -1,8 +1,10 @@
+from typing import Dict, Union
+
 import argparse
 import json
+from os import PathLike
 import logging
 from pathlib import Path
-from typing import Dict
 
 from allennlp.commands.subcommand import Subcommand
 import hydra
@@ -15,20 +17,22 @@ logger = logging.getLogger(__name__)
 @Subcommand.register("compose")
 class ComposeConfig(Subcommand):
     @overrides
-    def add_subparser(self, parser: argparse._SubParsersAction) -> argparse.ArgumentParser:
+    def add_subparser(
+            self, parser: argparse._SubParsersAction
+    ) -> argparse.ArgumentParser:
         description = """Compose a config with Hydra"""
-        subparser = parser.add_parser(self.name, description=description, help=description)
+        subparser = parser.add_parser(
+            self.name, description=description, help=description
+        )
 
-        subparser.add_argument("config_path",
-                               type=str,
-                               help="Path to the config directory.")
+        subparser.add_argument(
+            "config_path", type=str, help="Path to the config directory."
+        )
 
-        subparser.add_argument("config_name",
-                               type=str,
-                               help="Name of the config file to use.")
-        subparser.add_argument("job_name",
-                               type=str,
-                               help="Name of the job.")
+        subparser.add_argument(
+            "config_name", type=str, help="Name of the config file to use."
+        )
+        subparser.add_argument("job_name", type=str, help="Name of the job.")
 
         subparser.add_argument(
             "-s",
@@ -36,7 +40,7 @@ class ComposeConfig(Subcommand):
             required=True,
             type=str,
             help="Directory to save the config to. The name of the config will "
-                 "be `{config_name}.json`"
+                 "be `{config_name}.json`",
         )
         subparser.set_defaults(func=compose_config_from_args)
 
@@ -52,23 +56,20 @@ def compose_config_from_args(args: argparse.Namespace) -> Dict:
         The parsed args from `argparse`.
 
     # Returns
-
-    `Dict`: The composed config.
+        The composed config.
 
     """
     return compose_config(
         config_path=args.config_path,
         config_name=args.config_name,
         job_name=args.job_name,
-        serialization_dir=args.serialization_dir
+        serialization_dir=args.serialization_dir,
     )
 
 
 def compose_config(
-        config_path: str,
-        config_name: str,
-        job_name: str,
-        serialization_dir: str
+        config_path: Union[str, PathLike], config_name: str, job_name: str,
+        serialization_dir: Union[str, PathLike]
 ) -> Dict:
     # Make the config path relative to the location of THIS file. I.E. make it
     # relative to the `allennlp_hydra/commands` subdirectory.
@@ -86,7 +87,9 @@ def compose_config(
     # using OmegaConf in order to save it.
     cfg = OmegaConf.to_object(cfg)
     serialization_dir = Path(serialization_dir)
-    with serialization_dir.joinpath(f"{config_name}.json").open('w',encoding='utf-8' )as cfg_file:
+    with serialization_dir.joinpath(f"{config_name}.json").open(
+            "w", encoding="utf-8"
+    ) as cfg_file:
         # Add the extra options for readability.
         json.dump(cfg, cfg_file, indent=True, sort_keys=True)
 
