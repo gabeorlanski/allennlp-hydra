@@ -1,11 +1,12 @@
 import setuptools
+from allennlp_hydra.version import VERSION
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="allennlp-hydra",
-    version="1.0.0",
+    version=VERSION,
     author="Gabriel Orlanski",
     author_email="gabeorlanski@gmail.com",
     description="Hydra plugin for allennlp",
@@ -16,9 +17,12 @@ setuptools.setup(
     ),
     project_urls={
         "Documentation": "https://ssljax.readthedocs.io/en/stable",
-        "Source Code": "https://github.com/gabeorlanski/pathml",
+        "Source Code"  : "https://github.com/gabeorlanski/pathml",
     },
-    install_requires=["allennlp", "hydra", "pytest"],
+    install_requires=["allennlp>=2.6.0",
+                      "hydra-core>=1.1.1",
+                      "overrides>=3.1.0",
+                      "omegaconf>=2.1"],
     requires_python=">=3.7",
     classifiers=[
         "Intended Audience :: Science/Research",
