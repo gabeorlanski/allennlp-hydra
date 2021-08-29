@@ -1,5 +1,6 @@
 from numpy.testing import assert_allclose
 
+
 def assert_models_weights_equal(model_1, model_2):
     model_1_state_keys = model_1.state_dict().keys()
     model_2_state_keys = model_2.state_dict().keys()

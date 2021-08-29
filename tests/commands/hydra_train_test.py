@@ -7,7 +7,6 @@ from unittest.mock import patch
 import pytest
 from allennlp.common import Params
 from allennlp.commands.train import train_model
-import torch
 
 from allennlp_hydra.utils.testing import BaseTestCase, assert_models_weights_equal
 from allennlp_hydra.commands import hydra_train
@@ -57,25 +56,29 @@ class TestHydraTrainCommand(BaseTestCase):
         if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
             os.chdir(self.PROJECT_ROOT)
 
-        train_args.overrides = ["trainer/learning_rate_scheduler=polynomial_decay",
-                                "trainer.learning_rate_scheduler.warmup_steps=0"]
+        train_args.overrides = [
+            "trainer/learning_rate_scheduler=polynomial_decay",
+            "trainer.learning_rate_scheduler.warmup_steps=0",
+        ]
         hydra_train.hydra_train_model_from_args(train_args)
 
         serial_dir = self.TEST_DIR.joinpath("test_hydra_train")
         assert serial_dir.exists()
         assert serial_dir.is_dir()
 
-        assert serial_dir.joinpath('config.json').exists()
+        assert serial_dir.joinpath("config.json").exists()
 
-        saved_config = json.loads(serial_dir.joinpath('config.json').read_text('utf-8'))
+        saved_config = json.loads(serial_dir.joinpath("config.json").read_text("utf-8"))
         assert saved_config == simple_tagger_config
 
     def test_hydra_train_same_allennlp_train(self, simple_tagger_config, train_args):
         if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
             os.chdir(self.PROJECT_ROOT)
 
-        train_args.overrides = ["trainer/learning_rate_scheduler=polynomial_decay",
-                                "trainer.learning_rate_scheduler.warmup_steps=0"]
+        train_args.overrides = [
+            "trainer/learning_rate_scheduler=polynomial_decay",
+            "trainer.learning_rate_scheduler.warmup_steps=0",
+        ]
         hydra_result = hydra_train.hydra_train_model_from_args(train_args)
 
         allennlp_result = train_model(
@@ -86,7 +89,7 @@ class TestHydraTrainCommand(BaseTestCase):
             node_rank=train_args.node_rank,
             include_package=train_args.include_package,
             dry_run=train_args.dry_run,
-            file_friendly_logging=train_args.file_friendly_logging
+            file_friendly_logging=train_args.file_friendly_logging,
         )
 
         # Check the representations
@@ -97,9 +100,11 @@ class TestHydraTrainCommand(BaseTestCase):
 
         # Check the results
         hydra_metrics = json.loads(
-            train_args.serialization_dir.joinpath('metrics.json').read_text('utf-8'))
+            train_args.serialization_dir.joinpath("metrics.json").read_text("utf-8")
+        )
         allennlp_metrics = json.loads(
-            self.TEST_DIR.joinpath("allennlp_train/metrics.json").read_text('utf-8'))
+            self.TEST_DIR.joinpath("allennlp_train/metrics.json").read_text("utf-8")
+        )
         for k, v in hydra_metrics.items():
             if "best" not in k:
                 continue
