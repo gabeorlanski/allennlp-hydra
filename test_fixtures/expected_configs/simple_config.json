@@ -1,5 +1,5 @@
 {
-    "dataset_loader": {
+    "data_loader": {
         "batch_sampler": {
             "batch_size": 80,
             "padding_noise": 0.0,
@@ -9,7 +9,7 @@
     },
     "dataset_reader": {
         "type": "sequence_tagging",
-        "word_tag_delimiter": "##"
+        "word_tag_delimiter": "###"
     },
     "model": {
         "text_field_embedder": [

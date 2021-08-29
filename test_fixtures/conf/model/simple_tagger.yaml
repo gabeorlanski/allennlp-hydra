@@ -1,0 +1,14 @@
+type: simple_tagger
+text_field_embedder:
+  token_embedders:
+    tokens:
+      type: embedding
+      projection_dim: 2
+      pretrained_file: "test_fixtures/embeddings/glove.6B.100d.sample.txt.gz"
+      embedding_dim: 100
+      trainable: true
+encoder:
+  type: lstm
+  input_size: 2
+  hidden_size: 4
+  num_layers: 1

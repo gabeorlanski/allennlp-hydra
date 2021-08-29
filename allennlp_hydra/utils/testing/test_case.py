@@ -25,7 +25,7 @@ class BaseTestCase:
     # issues later down the line.
     @pytest.fixture(autouse=True)
     def test_dir(self, tmpdir):
-        self.TEST_DIR = pathlib.Path(tmpdir.mkdir("semparse"))
+        self.TEST_DIR = pathlib.Path(tmpdir.mkdir("allennlp_hydra"))
 
     def setup_method(self):
         logging.basicConfig(

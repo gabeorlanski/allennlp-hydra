@@ -1,2 +1,2 @@
 type: sequence_tagging
-word_tag_delimiter: "##"
+word_tag_delimiter: "###"

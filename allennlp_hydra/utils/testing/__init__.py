@@ -4,3 +4,4 @@ from allennlp_hydra.utils.testing.test_case import (
     FIXTURES_ROOT,
     BaseTestCase,
 )
+from allennlp_hydra.utils.testing.utils import assert_models_weights_equal
