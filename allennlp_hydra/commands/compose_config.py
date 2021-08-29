@@ -6,8 +6,6 @@ is also supported.
 
 # Parameters
 
-## Arguments
-
 config_path: `Union[str, PathLike]`
     Path to the root config directory.
 
@@ -17,19 +15,18 @@ config_name: `str`
 job_name: `str`
     The job name. This is passed to Hydra and is not used here.
 
-## Options
-
 -s/--serialization-dir: `Union[str, PathLike]`
     The directory where the new AllenNLP config will be saved to. The name used
      for saving will be the `config_name` and it will be a `.json` file.
 
--o/--overrides: `List[str]`
-    Keyword arguments passed will be used as a list of overrides using Hydra's override grammar for the config.
+-o/--overrides: `List[str]`, optional (default=`[]`)
+    Keyword arguments passed will be used as a list of overrides using Hydra's
+    override grammar for the config.
 
     Example usage:
 
     ```zsh
-    compose conf config example -s example --overrides A=B C="D"
+    allennlp compose conf config example -s example --overrides A=B C="D"
     ```
     Will be interpreted as overrides `['A=B', 'C="D"']`
 
@@ -78,7 +75,7 @@ layers: 5
 
 `conf/models/D.yaml`:
 
-```yml
+```YAML
 type: D
 input_dim: 10
 ```

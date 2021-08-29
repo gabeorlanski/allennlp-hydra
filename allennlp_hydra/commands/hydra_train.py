@@ -1,3 +1,57 @@
+"""
+The `hydra-train` creates an AllenNLP config by composing a set of `yaml` files
+with Hydra's [`Compose API`](https://hydra.cc/docs/advanced/compose_api) then
+passing it to AllenNLP's `train` method.
+
+Overriding using Hydra's [`Override Grammar`](https://hydra.cc/docs/advanced/compose_api)
+is also supported.
+
+The `hydra-train` command uses the underlying functionality of the
+[`compose`](/allennlp-hydra/site/hydra/commands/compose_config) command. So the
+use that documentation for understanding the composition of `.yaml` files.
+
+# Parameters
+
+config_path: `Union[str, PathLike]`
+    Path to the root config directory.
+
+config_name: `str`
+    The name of the root config file. Do NOT include the `.yaml`.
+
+job_name: `str`
+    The job name. This is passed to Hydra and is not used here.
+
+-s/--serialization-dir: `Union[str, PathLike]`
+    The directory where everything is saved.
+
+-r/--recover: `bool`, optional (default=`False`)
+    Flag. Recover training from the state in `serialization_dir`
+
+-f/--force: `bool`, optional (default=`False`)
+    Flag. Overwrite the output directory if it exists.
+
+--node-rank: `int`, optional (default=`0`)
+    The rank of this node in the distributed setup
+
+--dry-run: `bool`, optional (default=`False`)
+    Flag. Do not train the model, but create a vocabulary, show dataset statistics
+    and other training information
+
+--file-friendly-logging: `bool`, optional (default=`False`)
+    Flag. Outputs tqdm status on separate lines and slows tqdm refresh rate
+
+-o/--overrides: `List[str]`, optional (default=`[]`)
+    Keyword arguments passed will be used as a list of overrides using Hydra's
+    override grammar for the config.
+
+    Example usage:
+
+    ```zsh
+    --overrides A=B C="D"
+    ```
+    Will be interpreted as overrides `['A=B', 'C="D"']`
+"""
+
 import argparse
 import logging
 
@@ -66,6 +120,7 @@ class HydraTrain(Subcommand):
         subparser.add_argument(
             "--dry-run",
             action="store_true",
+            default=False,
             help=(
                 "do not train a model, but create a vocabulary, show dataset statistics and "
                 "other training information"
@@ -78,7 +133,8 @@ class HydraTrain(Subcommand):
             help="outputs tqdm status on separate lines and slows tqdm refresh rate",
         )
         subparser.add_argument(
-            "overrides",
+            "-o",
+            "--overrides",
             nargs="*",
             help="Any key=value arguments to override config values "
             "(use dots for.nested=overrides)",

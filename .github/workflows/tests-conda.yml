@@ -49,5 +49,4 @@ jobs:
     - name: Compile docs
       shell: bash -l {0}
       run: |
-        cd docs
-        make html
+        make build-docs
