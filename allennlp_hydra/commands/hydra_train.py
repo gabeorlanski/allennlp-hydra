@@ -13,11 +13,15 @@ logger = logging.getLogger(__name__)
 @Subcommand.register("hydra-train")
 class HydraTrain(Subcommand):
     @overrides
-    def add_subparser(self, parser: argparse._SubParsersAction) -> argparse.ArgumentParser:
+    def add_subparser(
+        self, parser: argparse._SubParsersAction
+    ) -> argparse.ArgumentParser:
         description = """
         Train the specified model on the specified dataset with a hydra config.
         """
-        subparser = parser.add_parser(self.name, description=description, help="Train a model.")
+        subparser = parser.add_parser(
+            self.name, description=description, help="Train a model."
+        )
 
         subparser.add_argument(
             "config_path", type=str, help="Path to the config directory."
@@ -53,7 +57,10 @@ class HydraTrain(Subcommand):
         )
 
         subparser.add_argument(
-            "--node-rank", type=int, default=0, help="rank of this node in the distributed setup"
+            "--node-rank",
+            type=int,
+            default=0,
+            help="rank of this node in the distributed setup",
         )
 
         subparser.add_argument(
@@ -74,7 +81,7 @@ class HydraTrain(Subcommand):
             "overrides",
             nargs="*",
             help="Any key=value arguments to override config values "
-                 "(use dots for.nested=overrides)",
+            "(use dots for.nested=overrides)",
         )
         subparser.set_defaults(func=hydra_train_model_from_args)
 
@@ -96,7 +103,7 @@ def hydra_train_model_from_args(args: argparse.Namespace):
         config_name=args.config_name,
         job_name=args.job_name,
         serialization_dir=None,
-        config_overrides=args.overrides
+        config_overrides=args.overrides,
     )
 
     return train_model(

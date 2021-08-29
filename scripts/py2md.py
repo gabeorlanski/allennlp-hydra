@@ -29,7 +29,7 @@ from pydoc_markdown.reflection import Argument, Module, Function, Class, Data
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("py2md")
-BASE_MODULE = os.environ.get("BASE_MODULE", "allennlp")
+BASE_MODULE = os.environ.get("BASE_MODULE", "allennlp_hydra")
 BASE_SOURCE_LINK = os.environ.get(
     "BASE_SOURCE_LINK", "https://github.com/allenai/allennlp/blob/main/allennlp/"
 )
@@ -299,7 +299,8 @@ class AllenNlpFilterProcessor(Struct):
                     return True
                 if (
                     node.parent
-                    and f"{node.parent.name}.{node.name}" in self.PRIVATE_METHODS_TO_KEEP
+                    and f"{node.parent.name}.{node.name}"
+                    in self.PRIVATE_METHODS_TO_KEEP
                 ):
                     return True
                 return False
@@ -346,7 +347,10 @@ class AllenNlpRenderer(MarkdownRenderer):
             > 60
         ):
             signature_args = ",\n    ".join(
-                filter(lambda s: s.strip() not in ("", ","), (str(arg) for arg in func.args))
+                filter(
+                    lambda s: s.strip() not in ("", ","),
+                    (str(arg) for arg in func.args),
+                )
             )
             parts.append("(\n    " + signature_args + "\n)")
         else:
@@ -490,7 +494,9 @@ def _py2md_wrapper(x: Tuple[str, str]) -> bool:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("modules", nargs="+", type=str, help="""The Python modules to parse.""")
+    parser.add_argument(
+        "modules", nargs="+", type=str, help="""The Python modules to parse."""
+    )
     parser.add_argument(
         "-o",
         "--out",
@@ -516,7 +522,9 @@ def main():
         chunk_size = max([1, int(len(outputs) / n_threads)])
         logger.info("Using %d threads", n_threads)
         with Pool(n_threads) as p:
-            for result in p.imap(_py2md_wrapper, zip(opts.modules, outputs), chunk_size):
+            for result in p.imap(
+                _py2md_wrapper, zip(opts.modules, outputs), chunk_size
+            ):
                 if not result:
                     errors += 1
     else:

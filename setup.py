@@ -17,12 +17,14 @@ setuptools.setup(
     ),
     project_urls={
         "Documentation": "https://allennlphydra.readthedocs.io/en/stable",
-        "Source Code"  : "https://github.com/gabeorlanski/pathml",
+        "Source Code": "https://github.com/gabeorlanski/pathml",
     },
-    install_requires=["allennlp>=2.6.0",
-                      "hydra-core>=1.1.1",
-                      "overrides>=3.1.0",
-                      "omegaconf>=2.1"],
+    install_requires=[
+        "allennlp>=2.6.0",
+        "hydra-core>=1.1.1",
+        "overrides>=3.1.0",
+        "omegaconf>=2.1",
+    ],
     requires_python=">=3.7",
     classifiers=[
         "Intended Audience :: Science/Research",

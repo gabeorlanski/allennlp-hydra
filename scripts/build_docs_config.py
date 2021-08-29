@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-Taken from https://github.com/allenai/allennlp-models/blob/b17d114ed49a711e66fd1bbe422b964f86296a6d/scripts/build_docs_config.py
+Taken from
+https://github.com/allenai/allennlp-models/blob/b17d114ed49a711e66fd1bbe422b964f86296a6d/scripts/build_docs_config.py
 """
 """
 This script is used to populate the table of contents for the API in the mkdocs config file.
@@ -15,8 +16,7 @@ from ruamel.yaml import YAML
 
 from allennlp_hydra.version import VERSION
 
-
-API_TOC_KEY = "Models"
+API_TOC_KEY = "Hydra"
 
 
 def parse_args():
@@ -25,7 +25,8 @@ def parse_args():
     parser.add_argument("source_yaml", help="Path to the mkdocs skeleton config file.")
     parser.add_argument("docs_root", help="The root of the markdown docs folder.")
     parser.add_argument(
-        "api_docs_path", help="The root of the API docs within the markdown docs root folder."
+        "api_docs_path",
+        help="The root of the API docs within the markdown docs root folder.",
     )
     parser.add_argument("--docs-version", type=str, default=f"v{VERSION}")
     return parser.parse_args()
@@ -54,7 +55,7 @@ def main():
     nav_entries = build_api_toc(Path(opts.api_docs_path), Path(opts.docs_root))
 
     # Add version to name.
-    source_yaml["site_name"] = f"AllenNLP Models {opts.docs_version}"
+    source_yaml["site_name"] = f"AllenNLP Hydra {opts.docs_version}"
 
     # Find the yaml sub-object corresponding to the API table of contents.
     site_nav = source_yaml["nav"]

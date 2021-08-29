@@ -1,8 +1,6 @@
 from copy import deepcopy
 import json
 
-from allennlp.commands import Subcommand
-
 from allennlp_hydra.utils.testing import BaseTestCase
 from allennlp_hydra.commands import compose_config
 
@@ -17,9 +15,7 @@ class TestComposeCommand(BaseTestCase):
         Test creating a simple config with compose.
         """
         result = compose_config.compose_config(
-            config_path=str(
-                self.FIXTURES_ROOT.joinpath("conf")
-            ),
+            config_path=str(self.FIXTURES_ROOT.joinpath("conf")),
             config_name="simple_config",
             serialization_dir=str(self.TEST_DIR.absolute().resolve()),
             job_name="test_simple_config",
@@ -40,27 +36,27 @@ class TestComposeCommand(BaseTestCase):
         # Setup the overrides, copy the original config to make sure it is not
         # changed.
         expected = deepcopy(simple_config)
-        expected['dataset_reader']['word_tag_delimiter'] = "__"
-        expected['trainer']['learning_rate_scheduler'] = {
-            "type"        : "polynomial_decay",
-            "power"       : 2,
+        expected["dataset_reader"]["word_tag_delimiter"] = "__"
+        expected["trainer"]["learning_rate_scheduler"] = {
+            "type": "polynomial_decay",
+            "power": 2,
             "warmup_steps": 250,
         }
-        expected['trainer']['grad_clipping'] = 1.0
-        expected['trainer'].pop('grad_norm')
+        expected["trainer"]["grad_clipping"] = 1.0
+        expected["trainer"].pop("grad_norm")
 
         result = compose_config.compose_config(
-            config_path=str(
-                self.FIXTURES_ROOT.joinpath("conf")
-            ),
+            config_path=str(self.FIXTURES_ROOT.joinpath("conf")),
             config_name="simple_config",
             serialization_dir=str(self.TEST_DIR.absolute().resolve()),
             job_name="test_simple_config",
-            config_overrides=['dataset_reader.word_tag_delimiter="__"',
-                              'trainer/learning_rate_scheduler=polynomial_decay',
-                              '++trainer.learning_rate_scheduler.warmup_steps=250',
-                              '+trainer.grad_clipping=1.0',
-                              '~trainer.grad_norm']
+            config_overrides=[
+                'dataset_reader.word_tag_delimiter="__"',
+                "trainer/learning_rate_scheduler=polynomial_decay",
+                "++trainer.learning_rate_scheduler.warmup_steps=250",
+                "+trainer.grad_clipping=1.0",
+                "~trainer.grad_norm",
+            ],
         )
 
         output_config = self.TEST_DIR.joinpath("simple_config.json")
