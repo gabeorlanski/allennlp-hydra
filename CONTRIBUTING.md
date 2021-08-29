@@ -1,8 +1,7 @@
 [comment]: <> (This is a copy of AllenNLP's `CONTRIBUTING.md` file)
 # Contributing
 
-Thanks for considering contributing!  We want AllenNLP to be *the way* to do cutting-edge NLP research, but we cannot
-get there without community support.
+Thanks for considering contributing!
 
 ## How Can I Contribute?
 
@@ -10,10 +9,10 @@ get there without community support.
 
 **Did you find a bug?**
 
-First, do [a quick search](https://github.com/allenai/allennlp/issues) to see whether your issue has already been reported.
+First, do [a quick search](https://github.com/gabeorlanski/allennlp-hydra/issues) to see whether your issue has already been reported.
 If your issue has already been reported, please comment on the existing issue.
 
-Otherwise, open [a new GitHub issue](https://github.com/allenai/allennlp/issues).  Be sure to include a clear title
+Otherwise, open [a new GitHub issue](https://github.com/gabeorlanski/allennlp-hydra/issues).  Be sure to include a clear title
 and description.  The description should include as much relevant information as possible.  The description should
 explain how to reproduce the erroneous behavior as well as the behavior you expect to see.  Ideally you would include a
 code sample or an executable test case demonstrating the expected behavior.
@@ -27,7 +26,7 @@ it first on a GitHub issue.
 
 * Check the documentation to make sure your feature does not already exist.
 
-* Do [a quick search](https://github.com/allenai/allennlp/issues) to see whether your enhancement has already been suggested.
+* Do [a quick search](https://github.com/gabeorlanski/allennlp-hydra/issues) to see whether your enhancement has already been suggested.
 
 When creating your enhancement request, please:
 
@@ -55,7 +54,7 @@ When you're ready to contribute code to address an open issue, please follow the
     
         git clone git@github.com:USERNAME/allennlp.git
     
-    At this point the local clone of your fork only knows that it came from *your* repo, github.com/USERNAME/allennlp.git, but doesn't know anything the *main* repo, [https://github.com/allenai/allennlp.git](https://github.com/allenai/allennlp). You can see this by running
+    At this point the local clone of your fork only knows that it came from *your* repo, github.com/USERNAME/allennlp.git, but doesn't know anything the *main* repo, [https://github.com/gabeorlanski/allennlp-hydra.git](https://github.com/gabeorlanski/allennlp-hydra). You can see this by running
     
         git remote -v
     
@@ -64,16 +63,16 @@ When you're ready to contribute code to address an open issue, please follow the
         origin https://github.com/USERNAME/allennlp.git (fetch)
         origin https://github.com/USERNAME/allennlp.git (push)
     
-    This means that your local clone can only track changes from your fork, but not from the main repo, and so you won't be able to keep your fork up-to-date with the main repo over time. Therefor you'll need to add another "remote" to your clone that points to [https://github.com/allenai/allennlp.git](https://github.com/allenai/allennlp). To do this, run the following:
+    This means that your local clone can only track changes from your fork, but not from the main repo, and so you won't be able to keep your fork up-to-date with the main repo over time. Therefor you'll need to add another "remote" to your clone that points to [https://github.com/gabeorlanski/allennlp-hydra.git](https://github.com/gabeorlanski/allennlp-hydra). To do this, run the following:
     
-        git remote add upstream https://github.com/allenai/allennlp.git
+        git remote add upstream https://github.com/gabeorlanski/allennlp-hydra.git
     
     Now if you do `git remote -v` again, you'll see
     
         origin https://github.com/USERNAME/allennlp.git (fetch)
         origin https://github.com/USERNAME/allennlp.git (push)
-        upstream https://github.com/allenai/allennlp.git (fetch)
-        upstream https://github.com/allenai/allennlp.git (push)
+        upstream https://github.com/gabeorlanski/allennlp-hydra.git (fetch)
+        upstream https://github.com/gabeorlanski/allennlp-hydra.git (push)
 
     Finally, you'll need to create a Python 3 virtual environment suitable for working on AllenNLP. There a number of tools out there that making working with virtual environments easier, but the most direct way is with the [`venv` module](https://docs.python.org/3.7/library/venv.html) in the standard library.
 
@@ -91,7 +90,7 @@ When you're ready to contribute code to address an open issue, please follow the
 
     <details><summary>Expand details 👇</summary><br/>
 
-    Once you've added an "upstream" remote pointing to [https://github.com/allenai/allennlp.git](https://github.com/allenai/allennlp), keeping your fork up-to-date is easy:
+    Once you've added an "upstream" remote pointing to [https://github.com/gabeorlanski/allennlp-hydra.git](https://github.com/gabeorlanski/allennlp-hydra), keeping your fork up-to-date is easy:
     
         git checkout main  # if not already on main
         git pull --rebase upstream main
@@ -117,13 +116,13 @@ When you're ready to contribute code to address an open issue, please follow the
 
     <details><summary>Expand details 👇</summary><br/>
 
-    Our continuous integration (CI) testing runs [a number of checks](https://github.com/allenai/allennlp/actions?query=workflow%3APR) for each pull request on [GitHub Actions](https://github.com/features/actions). You can run most of these tests locally, which is something you should do *before* opening a PR to help speed up the review process and make it easier for us.
+    Our continuous integration (CI) testing runs [a number of checks](https://github.com/gabeorlanski/allennlp-hydra/actions?query=workflow%3APR) for each pull request on [GitHub Actions](https://github.com/features/actions). You can run most of these tests locally, which is something you should do *before* opening a PR to help speed up the review process and make it easier for us.
     
     First, you should run [`black`](https://github.com/psf/black) to make sure you code is formatted consistently. Many IDEs support code formatters as plugins, so you may be able to setup black to run automatically everytime you save. [`black.vim`](https://github.com/psf/black/tree/master/plugin) will give you this functionality in Vim, for example. But `black` is also easy to run directly from the command line. Just run this from the root of your clone:
     
         black .
 
-    Our CI also uses [`flake8`](https://github.com/allenai/allennlp/tree/main/tests) to lint the code base and [`mypy`](http://mypy-lang.org/) for type-checking. You should run both of these next with
+    Our CI also uses [`flake8`](https://github.com/gabeorlanski/allennlp-hydra/tree/main/tests) to lint the code base and [`mypy`](http://mypy-lang.org/) for type-checking. You should run both of these next with
 
         flake8 .
 
@@ -131,7 +130,7 @@ When you're ready to contribute code to address an open issue, please follow the
 
         make typecheck
 
-    We also strive to maintain high test coverage, so most contributions should include additions to [the unit tests](https://github.com/allenai/allennlp/tree/main/tests). These tests are run with [`pytest`](https://docs.pytest.org/en/latest/), which you can use to locally run any test modules that you've added or changed.
+    We also strive to maintain high test coverage, so most contributions should include additions to [the unit tests](https://github.com/gabeorlanski/allennlp-hydra/tree/main/tests). These tests are run with [`pytest`](https://docs.pytest.org/en/latest/), which you can use to locally run any test modules that you've added or changed.
 
     For example, if you've fixed a bug in `allennlp/nn/util.py`, you can run the tests specific to that module with
     
@@ -154,9 +153,9 @@ When you're ready to contribute code to address an open issue, please follow the
     
         make serve-docs
 
-    And finally, please update the [CHANGELOG](https://github.com/allenai/allennlp/blob/main/CHANGELOG.md) with notes on your contribution in the "Unreleased" section at the top.
+    And finally, please update the [CHANGELOG](https://github.com/gabeorlanski/allennlp-hydra/blob/main/CHANGELOG.md) with notes on your contribution in the "Unreleased" section at the top.
 
-    After all of the above checks have passed, you can now open [a new GitHub pull request](https://github.com/allenai/allennlp/pulls).
+    After all of the above checks have passed, you can now open [a new GitHub pull request](https://github.com/gabeorlanski/allennlp-hydra/pulls).
     Make sure you have a clear description of the problem and the solution, and include a link to relevant issues.
 
     We look forward to reviewing your PR!
@@ -255,18 +254,3 @@ class SentenceClassifier(Model):
         """
         pass
 ```
-
-### New models
-
-**Do you have a new state-of-the-art model?**
-
-We are always looking for new models to add to our collection. The most popular models are usually added to the official [AllenNLP Models](https://github.com/allenai/allennlp-models) repository, and in some cases to the [AllenNLP Demo](https://demo.allennlp.org/).
-
-If you think your model should be part of AllenNLP Models, please [create a pull request](https://github.com/allenai/allennlp-models/pulls) in the models repo that includes:
-
-* Any code changes needed to support your new model.
-
-* A link to the model itself.  Please do not check your model into the GitHub repository, but instead upload it in the
-PR conversation or provide a link to it at an external location.
-
-In the description of your PR, please clearly explain the task your model performs along with the relevant metrics on an established dataset.
