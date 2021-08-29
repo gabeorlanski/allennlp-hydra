@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 
 import argparse
 import json
@@ -70,6 +70,7 @@ def compose_config_from_args(args: argparse.Namespace) -> Dict:
         config_name=args.config_name,
         job_name=args.job_name,
         serialization_dir=args.serialization_dir,
+        config_overrides=args.overrides
     )
 
 
@@ -77,7 +78,7 @@ def compose_config(
         config_path: Union[str, PathLike],
         config_name: str,
         job_name: str,
-        serialization_dir: Union[str, PathLike],
+        serialization_dir: Optional[Union[str, PathLike]] = None,
         config_overrides: List[str] = None
 ) -> Dict:
     if config_overrides is None:
@@ -98,11 +99,12 @@ def compose_config(
     # cfg is a `DictConfig` object, so we need to convert it to a normal dict
     # using OmegaConf in order to save it.
     cfg = OmegaConf.to_object(cfg)
-    serialization_dir = Path(serialization_dir)
-    with serialization_dir.joinpath(f"{config_name}.json").open(
-            "w", encoding="utf-8"
-    ) as cfg_file:
-        # Add the extra options for readability.
-        json.dump(cfg, cfg_file, indent=True, sort_keys=True)
+
+    # We only save if a serialization dir was passed.
+    if serialization_dir is not None:
+        cfg_save_path = Path(serialization_dir).joinpath(f"{config_name}.json")
+        with cfg_save_path.open("w", encoding="utf-8") as cfg_file:
+            # Add the extra options for readability.
+            json.dump(cfg, cfg_file, indent=True, sort_keys=True)
 
     return cfg
