@@ -31,7 +31,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("py2md")
 BASE_MODULE = os.environ.get("BASE_MODULE", "allennlp_hydra")
 BASE_SOURCE_LINK = os.environ.get(
-    "BASE_SOURCE_LINK", "https://github.com/allenai/allennlp/blob/main/allennlp/"
+    "BASE_SOURCE_LINK", "https://allennlphydra.readthedocs.io/"
 )
 
 
