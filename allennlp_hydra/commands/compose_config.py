@@ -173,7 +173,7 @@ logger = logging.getLogger(__name__)
 class ComposeConfig(Subcommand):
     @overrides
     def add_subparser(
-        self, parser: argparse._SubParsersAction
+            self, parser: argparse._SubParsersAction
     ) -> argparse.ArgumentParser:
         description = """Compose a config with Hydra"""
         subparser = parser.add_parser(
@@ -195,15 +195,23 @@ class ComposeConfig(Subcommand):
             required=True,
             type=str,
             help="Directory to save the config to. The name of the config will "
-            "be `{config_name}.json`",
+                 "be `{config_name}.json`",
         )
         subparser.add_argument(
             "-o",
             "--overrides",
             nargs="*",
             help="Any key=value arguments to override config values "
-            "(use dots for.nested=overrides)",
+                 "(use dots for.nested=overrides)",
         )
+
+        subparser.add_argument(
+            "--fill-defaults",
+            action="store_true",
+            default=False,
+            help="Add default arguments from each loaded class to the config.",
+        )
+
         subparser.set_defaults(func=compose_config_from_args)
 
         return subparser
@@ -231,11 +239,12 @@ def compose_config_from_args(args: argparse.Namespace) -> Dict:
 
 
 def compose_config(
-    config_path: Union[str, PathLike],
-    config_name: str,
-    job_name: str,
-    serialization_dir: Optional[Union[str, PathLike]] = None,
-    config_overrides: List[str] = None,
+        config_path: Union[str, PathLike],
+        config_name: str,
+        job_name: str,
+        serialization_dir: Optional[Union[str, PathLike]] = None,
+        config_overrides: List[str] = None,
+        fill_defaults: bool = False,
 ) -> Dict:
     """
     Create an AllenNLP config by composing a set of `yaml` files with Hydra's
@@ -261,6 +270,10 @@ def compose_config(
 
     config_overrides: `List[str]`, optional (default=`[]`)
         List of overrides using Hydra's override grammar for the config.
+
+    fill_defaults: `bool`, optional (default=`False`)
+        Add arguments and their default values to the config if they are not
+        specified.
 
     # Returns
 
