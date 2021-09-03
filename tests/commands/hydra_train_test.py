@@ -110,3 +110,39 @@ class TestHydraTrainCommand(BaseTestCase):
                 continue
 
             assert allennlp_metrics[k] == v, k
+
+    @pytest.mark.parametrize('serialization_arg', ['-s', '--serialization-dir'])
+    @pytest.mark.parametrize('override_arg', ['-o', '--overrides', None])
+    def test_cli_args(self, serialization_arg, override_arg):
+        parser = argparse.ArgumentParser(description="Testing")
+        subparsers = parser.add_subparsers(title="Commands", metavar="")
+        hydra_train.HydraTrain().add_subparser(subparsers)
+
+        raw_args = [
+            "hydra-train",
+            "path/to/config",
+            "config_name",
+            "job_name",
+            serialization_arg,
+            "serialization_dir"
+        ]
+
+        expected_overrides = None
+        if override_arg is not None:
+            expected_overrides = [
+                "dataset_reader.word_tag_delimiter='__'",
+                "++trainer.learning_rate_scheduler.warmup_steps=250"
+            ]
+            raw_args.extend([
+                override_arg,
+                *expected_overrides
+            ])
+
+        args = parser.parse_args(raw_args)
+
+        assert args.func == hydra_train.hydra_train_model_from_args
+        assert args.config_path == "path/to/config"
+        assert args.config_name == "config_name"
+        assert args.job_name == "job_name"
+        assert args.serialization_dir == "serialization_dir"
+        assert args.overrides == expected_overrides
