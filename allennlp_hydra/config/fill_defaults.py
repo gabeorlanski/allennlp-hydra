@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def fill_config_with_default_values(
-        base_class: Union[Registrable, FromParams],
-        config: Union[Params, Dict]
+    base_class: Union[Registrable, FromParams], config: Union[Params, Dict]
 ) -> Dict:
     # Copy to avoid mutable changes
     if isinstance(config, Params):
@@ -43,19 +42,22 @@ def fill_config_with_default_values(
             continue
 
         if parameter.annotation is None:
-            raise ValueError(f"Argument {parameter.name} in class"
-                             f" {base_class.__name__} does not have a type"
-                             f" annotation")
+            raise ValueError(
+                f"Argument {parameter.name} in class"
+                f" {base_class.__name__} does not have a type"
+                f" annotation"
+            )
 
         # If it is not a dict, then it is not a class constructor argument and
         # thus no need to recurse.
         if not isinstance(config_dict[parameter.name], dict):
             continue
 
-        output_config[parameter.name] = dict(fill_config_with_default_values(
-            get_annotation_class(parameter),
-            Params(config_dict[parameter.name])
-        ))
+        output_config[parameter.name] = dict(
+            fill_config_with_default_values(
+                get_annotation_class(parameter), Params(config_dict[parameter.name])
+            )
+        )
 
     return output_config
 
@@ -93,40 +95,46 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
             # it a day.
             return parameter.default
 
-        if is_subclass_of_registrable and isinstance(parameter.default, annotation_type):
+        if is_subclass_of_registrable and isinstance(
+            parameter.default, annotation_type
+        ):
             # Reverse lookup what the class was registered as. We do need to
             # access the protected `_registry` attribute of registrable, but
             # there is currently no other way to do this.
             parameter_default_class = parameter.default.__class__
             registered_name = None
             if annotation_type not in Registrable._registry:
-                raise KeyError(f"'{parameter.annotation.__name__}' has no"
-                               f" registered classes")
+                raise KeyError(
+                    f"'{parameter.annotation.__name__}' has no" f" registered classes"
+                )
 
-            for name, registered_class in Registrable._registry[parameter.annotation].items():
+            for name, registered_class in Registrable._registry[
+                parameter.annotation
+            ].items():
                 if registered_class[0] == parameter_default_class:
                     registered_name = name
                     break
 
             if registered_name is None:
-                raise KeyError(f"'{parameter_default_class.__name__}' was never"
-                               f" registered.")
+                raise KeyError(
+                    f"'{parameter_default_class.__name__}' was never" f" registered."
+                )
 
             return fill_config_with_default_values(
                 annotation_type, {"type": registered_name}
             )
         elif is_subclass_of_registrable and isinstance(parameter.default, Lazy):
-            logger.warning(f"{parameter.name} has a Lazy object for its "
-                           f"default. That is not currently supported and will"
-                           f" be handled as getting the arguments for the"
-                           f" default annotation.")
+            logger.warning(
+                f"{parameter.name} has a Lazy object for its "
+                f"default. That is not currently supported and will"
+                f" be handled as getting the arguments for the"
+                f" default annotation."
+            )
             return fill_config_with_default_values(
                 annotation_type, {"type": annotation_type.default_implementation}
             )
         elif not is_subclass_of_registrable and issubclass(annotation_type, FromParams):
-            return fill_config_with_default_values(
-                annotation_type, {}
-            )
+            return fill_config_with_default_values(annotation_type, {})
 
     # No annotation found or it is not a registrable, so return the default
     # value.
@@ -144,7 +152,7 @@ def get_annotation_class(parameter: inspect.Parameter) -> Union[type, None]:
 
     # Returns
 
-    `Union[type, None]`: The type or None.
+    `Union[type, None]` The type or None.
 
     """
     # If the type is a `_GenericAlias`, we care what the arguments are inside.

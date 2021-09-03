@@ -178,7 +178,7 @@ logger = logging.getLogger(__name__)
 class ComposeConfig(Subcommand):
     @overrides
     def add_subparser(
-            self, parser: argparse._SubParsersAction
+        self, parser: argparse._SubParsersAction
     ) -> argparse.ArgumentParser:
         description = """Compose a config with Hydra"""
         subparser = parser.add_parser(
@@ -200,14 +200,14 @@ class ComposeConfig(Subcommand):
             required=True,
             type=str,
             help="Directory to save the config to. The name of the config will "
-                 "be `{config_name}.json`",
+            "be `{config_name}.json`",
         )
         subparser.add_argument(
             "-o",
             "--overrides",
             nargs="*",
             help="Any key=value arguments to override config values "
-                 "(use dots for.nested=overrides)",
+            "(use dots for.nested=overrides)",
         )
 
         subparser.add_argument(
@@ -244,12 +244,12 @@ def compose_config_from_args(args: argparse.Namespace) -> Dict:
 
 
 def compose_config(
-        config_path: Union[str, PathLike],
-        config_name: str,
-        job_name: str,
-        serialization_dir: Optional[Union[str, PathLike]] = None,
-        config_overrides: List[str] = None,
-        fill_defaults: bool = False,
+    config_path: Union[str, PathLike],
+    config_name: str,
+    job_name: str,
+    serialization_dir: Optional[Union[str, PathLike]] = None,
+    config_overrides: List[str] = None,
+    fill_defaults: bool = False,
 ) -> Dict:
     """
     Create an AllenNLP config by composing a set of `yaml` files with Hydra's
@@ -308,17 +308,13 @@ def compose_config(
     # If filling the defaults, fill them here.
     if fill_defaults:
         cfg["data_loader"] = fill_config_with_default_values(
-            DataLoader, cfg['data_loader']
+            DataLoader, cfg["data_loader"]
         )
-        cfg['dataset_reader'] = fill_config_with_default_values(
-            DatasetReader, cfg['dataset_reader']
+        cfg["dataset_reader"] = fill_config_with_default_values(
+            DatasetReader, cfg["dataset_reader"]
         )
-        cfg['model'] = fill_config_with_default_values(
-            Model, cfg['model']
-        )
-        cfg['trainer'] = fill_config_with_default_values(
-            Trainer, cfg['trainer']
-        )
+        cfg["model"] = fill_config_with_default_values(Model, cfg["model"])
+        cfg["trainer"] = fill_config_with_default_values(Trainer, cfg["trainer"])
 
     # We only save if a serialization dir was passed.
     if serialization_dir is not None:

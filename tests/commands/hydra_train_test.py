@@ -112,8 +112,8 @@ class TestHydraTrainCommand(BaseTestCase):
 
             assert allennlp_metrics[k] == v, k
 
-    @pytest.mark.parametrize('serialization_arg', ['-s', '--serialization-dir'])
-    @pytest.mark.parametrize('override_arg', ['-o', '--overrides', None])
+    @pytest.mark.parametrize("serialization_arg", ["-s", "--serialization-dir"])
+    @pytest.mark.parametrize("override_arg", ["-o", "--overrides", None])
     def test_cli_args(self, serialization_arg, override_arg):
         parser = argparse.ArgumentParser(description="Testing")
         subparsers = parser.add_subparsers(title="Commands", metavar="")
@@ -125,19 +125,16 @@ class TestHydraTrainCommand(BaseTestCase):
             "config_name",
             "job_name",
             serialization_arg,
-            "serialization_dir"
+            "serialization_dir",
         ]
 
         expected_overrides = None
         if override_arg is not None:
             expected_overrides = [
                 "dataset_reader.word_tag_delimiter='__'",
-                "++trainer.learning_rate_scheduler.warmup_steps=250"
+                "++trainer.learning_rate_scheduler.warmup_steps=250",
             ]
-            raw_args.extend([
-                override_arg,
-                *expected_overrides
-            ])
+            raw_args.extend([override_arg, *expected_overrides])
 
         args = parser.parse_args(raw_args)
 
@@ -151,7 +148,7 @@ class TestHydraTrainCommand(BaseTestCase):
     def test_fill_defaults_same_model(self, simple_tagger_config, train_args):
         if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
             os.chdir(self.PROJECT_ROOT)
-            
+
         train_args.overrides = [
             "trainer/learning_rate_scheduler=polynomial_decay",
             "trainer.learning_rate_scheduler.warmup_steps=0",

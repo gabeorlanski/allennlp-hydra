@@ -168,7 +168,7 @@ def hydra_train_model_from_args(args: argparse.Namespace):
         job_name=args.job_name,
         serialization_dir=None,
         config_overrides=args.overrides,
-        fill_defaults=args.fill_defaults
+        fill_defaults=args.fill_defaults,
     )
 
     return train_model(
