@@ -28,6 +28,7 @@ class TestHydraTrainCommand(BaseTestCase):
         args.include_package = []
         args.dry_run = False
         args.file_friendly_logging = True
+        args.fill_defaults = False
         yield args
 
     def test_mock_call_with_args(self, simple_config, train_args):
@@ -146,3 +147,44 @@ class TestHydraTrainCommand(BaseTestCase):
         assert args.job_name == "job_name"
         assert args.serialization_dir == "serialization_dir"
         assert args.overrides == expected_overrides
+
+    def test_fill_defaults_same_model(self, simple_tagger_config, train_args):
+        if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
+            os.chdir(self.PROJECT_ROOT)
+            
+        train_args.overrides = [
+            "trainer/learning_rate_scheduler=polynomial_decay",
+            "trainer.learning_rate_scheduler.warmup_steps=0",
+        ]
+        train_args.fill_defaults = True
+        hydra_result = hydra_train.hydra_train_model_from_args(train_args)
+
+        allennlp_result = train_model(
+            params=Params(simple_tagger_config),
+            serialization_dir=self.TEST_DIR.joinpath("allennlp_train"),
+            recover=train_args.recover,
+            force=train_args.force,
+            node_rank=train_args.node_rank,
+            include_package=train_args.include_package,
+            dry_run=train_args.dry_run,
+            file_friendly_logging=train_args.file_friendly_logging,
+        )
+
+        # Check the representations
+        assert str(allennlp_result) == str(hydra_result)
+
+        # Check the parameters
+        assert_models_weights_equal(allennlp_result, hydra_result)
+
+        # Check the results
+        hydra_metrics = json.loads(
+            train_args.serialization_dir.joinpath("metrics.json").read_text("utf-8")
+        )
+        allennlp_metrics = json.loads(
+            self.TEST_DIR.joinpath("allennlp_train/metrics.json").read_text("utf-8")
+        )
+        for k, v in hydra_metrics.items():
+            if "best" not in k:
+                continue
+
+            assert allennlp_metrics[k] == v, k

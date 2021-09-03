@@ -139,6 +139,14 @@ class HydraTrain(Subcommand):
             help="Any key=value arguments to override config values "
             "(use dots for.nested=overrides)",
         )
+
+        subparser.add_argument(
+            "--fill-defaults",
+            action="store_true",
+            default=False,
+            help="Add default arguments from each loaded class to the config.",
+        )
+
         subparser.set_defaults(func=hydra_train_model_from_args)
 
         return subparser
@@ -160,6 +168,7 @@ def hydra_train_model_from_args(args: argparse.Namespace):
         job_name=args.job_name,
         serialization_dir=None,
         config_overrides=args.overrides,
+        fill_defaults=args.fill_defaults
     )
 
     return train_model(
