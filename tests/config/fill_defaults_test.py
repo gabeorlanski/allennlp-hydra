@@ -3,6 +3,9 @@ import json
 import pytest
 
 from allennlp.common import Registrable, Params
+from allennlp.data import DataLoader
+from allennlp.training import Trainer
+from allennlp.models import Model
 
 from allennlp_hydra.utils.testing import BaseTestCase
 from allennlp_hydra.config import fill_defaults
@@ -139,8 +142,151 @@ class TestFillDefaults(BaseTestCase):
     def test_fill_config(self, cfg, expected):
         result = fill_defaults.fill_config_with_default_values(A, Params(cfg))
 
-        assert result.params == expected
+        assert result == expected
 
-        actual_class = A.from_params(result)
+        actual_class = A.from_params(Params(result))
         expected_class = A.from_params(Params(cfg))
         assert actual_class == expected_class
+
+    def test_fill_default_init_class(self):
+        result = fill_defaults.fill_config_with_default_values(
+            DataLoader,
+            {
+                "batch_sampler": {
+                    "batch_size"   : 80,
+                    "padding_noise": 0.0,
+                    "sorting_keys" : ["tokens"],
+                    "type"         : "bucket"
+                }
+            }
+        )
+        assert result == {
+            "batch_size"             : None,
+            "drop_last"              : False,
+            "shuffle"                : False,
+            "batch_sampler"          : {
+                "batch_size"   : 80,
+                "padding_noise": 0.0,
+                "sorting_keys" : ["tokens"],
+                "type"         : "bucket",
+                "drop_last"    : False,
+                "shuffle"      : True
+            },
+            "batches_per_epoch"      : None,
+            "num_workers"            : 0,
+            "max_instances_in_memory": None,
+            "start_method"           : "fork",
+            "cuda_device"            : None,
+            "quiet"                  : False,
+            "collate_fn"             : {"type": "allennlp"}
+        }
+
+    def test_default_lazy_object(self):
+        result = fill_defaults.fill_config_with_default_values(
+            Trainer,
+            {
+                "cuda_device"            : -1,
+                "grad_norm"              : 1.0,
+                "learning_rate_scheduler": {
+                    "model_size"  : 1024,
+                    "type"        : "noam",
+                    "warmup_steps": 5
+                },
+                "num_epochs"             : 1,
+                "patience"               : 500
+            }
+        )
+
+        assert result == {
+            'cuda_device'                    : -1,
+            'grad_norm'                      : 1.0,
+            'learning_rate_scheduler'        : {
+                'model_size'  : 1024,
+                'type'        : 'noam',
+                'warmup_steps': 5,
+                'factor'      : 1.0,
+                'last_epoch'  : -1
+            }, 'num_epochs'                  : 1, 'patience': 500,
+            'validation_data_loader'         : None,
+            'local_rank'                     : 0,
+            'validation_metric'              : '-loss',
+            'grad_clipping'                  : None,
+            'distributed'                    : False,
+            'world_size'                     : 1,
+            'num_gradient_accumulation_steps': 1,
+            'use_amp'                        : False,
+            'no_grad'                        : None,
+            'optimizer'                      : {
+                'type'            : 'adam',
+                'parameter_groups': None,
+                'lr'              : 0.001,
+                'betas'           : (0.9, 0.999),
+                'eps'             : 1e-08,
+                'weight_decay'    : 0.0,
+                'amsgrad'         : False
+            },
+            'momentum_scheduler'             : None,
+            'moving_average'                 : None,
+            'checkpointer'                   : {
+                'type'                     : 'default',
+                'save_completed_epochs'    : True,
+                'save_every_num_seconds'   : None,
+                'save_every_num_batches'   : None,
+                'keep_most_recent_by_count': 2,
+                'keep_most_recent_by_age'  : None
+            },
+            'callbacks'                      : None,
+            'enable_default_callbacks'       : True,
+            'run_confidence_checks'          : True
+        }
+
+    def test_from_params_default(self):
+        result = fill_defaults.fill_config_with_default_values(
+            Model,
+            {
+                "text_field_embedder": [
+                    {
+                        "token_embedders": [
+                            {
+                                "tokens": [
+                                    {
+                                        "type": "embedding"
+                                    }, {
+                                        "vocab_namespace": "source_tokens"
+                                    }, {
+                                        "embedding_dim": 512
+                                    }, {
+                                        "trainable": True
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "type"               : "basic_classifier"
+            }
+        )
+
+        assert result == {
+            'text_field_embedder': [{
+                'token_embedders': [{
+                    'tokens': [{
+                        'type': 'embedding'
+                    }, {
+                        'vocab_namespace': 'source_tokens'
+                    }, {
+                        'embedding_dim': 512
+                    }, {
+                        'trainable': True
+                    }]
+                }]
+            }],
+            'type'               : 'basic_classifier',
+            'seq2seq_encoder'    : None,
+            'feedforward'        : None,
+            'dropout'            : None,
+            'num_labels'         : None,
+            'label_namespace'    : 'labels',
+            'namespace'          : 'tokens',
+            'initializer'        : {'regexes': None, 'prevent_regexes': None}
+        }

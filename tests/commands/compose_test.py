@@ -3,8 +3,13 @@ from copy import deepcopy
 import json
 import pytest
 
+from allennlp.data import DataLoader, DatasetReader
+from allennlp.training import Trainer
+from allennlp.models import Model
+
 from allennlp_hydra.utils.testing import BaseTestCase
 from allennlp_hydra.commands import compose_config
+from allennlp_hydra.config.fill_defaults import fill_config_with_default_values
 
 
 class TestComposeCommand(BaseTestCase):
@@ -106,3 +111,46 @@ class TestComposeCommand(BaseTestCase):
         assert args.job_name == "job_name"
         assert args.serialization_dir == "serialization_dir"
         assert args.overrides == expected_overrides
+
+    def test_simple_config_fill_defaults(self, simple_config):
+        """
+        Test creating a simple config with compose that fills the default
+        values.
+        """
+        simple_config["data_loader"] = fill_config_with_default_values(
+            DataLoader, simple_config['data_loader']
+        )
+        simple_config['dataset_reader'] = fill_config_with_default_values(
+            DatasetReader, simple_config['dataset_reader']
+        )
+        simple_config['model'] = fill_config_with_default_values(
+            Model, simple_config['model']
+        )
+        simple_config['trainer'] = fill_config_with_default_values(
+            Trainer, simple_config['trainer']
+        )
+
+        # JSON does not serialize the ()
+        simple_config['trainer']['optimizer']['betas'] = [0.9, 0.999]
+
+        result = compose_config.compose_config(
+            config_path=str(self.FIXTURES_ROOT.joinpath("conf")),
+            config_name="simple_config",
+            serialization_dir=str(self.TEST_DIR.absolute().resolve()),
+            job_name="test_simple_config",
+            fill_defaults=True
+        )
+
+        # Test that it saved the config to the output directory
+        output_config = self.TEST_DIR.joinpath("simple_config.json")
+        assert output_config.exists()
+
+        # Read the contents of that file and check it is equal to what was
+        # returned.
+        saved_config = json.loads(output_config.read_text("utf-8"))
+
+        # JSON does not serialize the ()
+        result['trainer']['optimizer']['betas'] = [0.9, 0.999]
+        assert saved_config == result
+
+        assert result == simple_config

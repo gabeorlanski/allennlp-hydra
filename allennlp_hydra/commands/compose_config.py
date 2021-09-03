@@ -161,10 +161,15 @@ from os import PathLike
 import logging
 from pathlib import Path
 
+from allennlp.data import DataLoader, DatasetReader
+from allennlp.training import Trainer
+from allennlp.models import Model
 from allennlp.commands.subcommand import Subcommand
 import hydra
 from omegaconf import OmegaConf
 from overrides import overrides
+
+from allennlp_hydra.config.fill_defaults import fill_config_with_default_values
 
 logger = logging.getLogger(__name__)
 
@@ -299,6 +304,21 @@ def compose_config(
     # cfg is a `DictConfig` object, so we need to convert it to a normal dict
     # using OmegaConf in order to save it.
     cfg = OmegaConf.to_object(cfg)
+
+    # If filling the defaults, fill them here.
+    if fill_defaults:
+        cfg["data_loader"] = fill_config_with_default_values(
+            DataLoader, cfg['data_loader']
+        )
+        cfg['dataset_reader'] = fill_config_with_default_values(
+            DatasetReader, cfg['dataset_reader']
+        )
+        cfg['model'] = fill_config_with_default_values(
+            Model, cfg['model']
+        )
+        cfg['trainer'] = fill_config_with_default_values(
+            Trainer, cfg['trainer']
+        )
 
     # We only save if a serialization dir was passed.
     if serialization_dir is not None:
