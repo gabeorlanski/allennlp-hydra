@@ -303,7 +303,7 @@ def compose_config(
 
     # cfg is a `DictConfig` object, so we need to convert it to a normal dict
     # using OmegaConf in order to save it.
-    cfg = OmegaConf.to_object(cfg)
+    cfg = OmegaConf.to_container(cfg, resolve=True)
 
     # If filling the defaults, fill them here.
     if fill_defaults:

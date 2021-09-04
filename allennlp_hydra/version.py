@@ -1,5 +1,6 @@
 """
-Taken from https://github.com/allenai/allennlp-models/blob/b17d114ed49a711e66fd1bbe422b964f86296a6d/allennlp_models/version.py
+Taken from
+https://github.com/allenai/allennlp-models/blob/main/allennlp_models/version.py
 """
 _MAJOR = "0"
 _MINOR = "0"

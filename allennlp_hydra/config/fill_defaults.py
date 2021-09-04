@@ -1,3 +1,6 @@
+"""
+Module for adding arguments and their default values to a config.
+"""
 from typing import Dict, Union, Any, get_args
 
 from copy import deepcopy
@@ -10,8 +13,40 @@ logger = logging.getLogger(__name__)
 
 
 def fill_config_with_default_values(
-    base_class: Union[Registrable, FromParams], config: Union[Params, Dict]
+    base_class: Union[FromParams, Registrable], config: Union[Dict, Params]
 ) -> Dict:
+    """
+    Fill a `config` with the arguments and their default values from a
+    `base_class`. When it encounters nested objects (i.e. non-builtin classes,
+    for now limited to AllenNLP `FromParams` and `Registrable`) it will recurse
+    and create the dictionary with defaults.
+
+    This does NOT change the mutable config nor does it override keys if they
+    exist in the config.
+
+    **NOTE:** When AllenNLP expands upon their
+    [`to_params`](https://docs.allennlp.org/main/api/common/from_params/#to_params)
+    api, this will rely on that, but for the time being it relies on the
+    [`inspect`](https://docs.python.org/3/library/inspect.html) module.
+
+    # Parameters
+
+    base_class: `Union[FromParams, Registrable]`
+        The base class that you want to use to fill the `config` with the
+        arguments and their default values. These arguments are for the
+        `base_class.__init__` function.
+
+    config: `Union[Dict, Params]`
+        The configuration dict to fill with the defaults. It does **NOT** make
+        any changes to the mutable data but instead uses `deepcopy` to copy it
+        to a new object.
+
+        Existing keys will not be overwritten.
+
+    # Returns
+
+    `Dict` The filled config.
+    """
     # Copy to avoid mutable changes
     if isinstance(config, Params):
         config_dict = config.params
