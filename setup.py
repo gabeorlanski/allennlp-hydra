@@ -10,6 +10,7 @@ setuptools.setup(
     author="Gabriel Orlanski",
     author_email="gabeorlanski@gmail.com",
     description="Hydra plugin for allennlp",
+    license="Apache 2.0",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(
