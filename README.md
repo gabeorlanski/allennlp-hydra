@@ -1,11 +1,11 @@
 # AllenNLP-Hydra
 
-**NOTE** there is no affiliation between this project and AllenNLP or the Allen 
-Institute for AI. 
-
 Plugin For [AllenNLP](https://github.com/allenai/allennlp) that enables 
 composing configs through the use of the 
 [Hydra Library from Facebook Research](https://github.com/facebookresearch/hydra).
+
+**NOTE** there is no affiliation between this project and AllenNLP or the Allen 
+Institute for AI.
 
 We use the same 
 [contributions guideline](https://github.com/gabeorlanski/allennlp-hydra/blob/master/CONTRIBUTING.md) 
@@ -14,10 +14,16 @@ guide](https://github.com/gabeorlanski/allennlp-hydra/blob/master/STYLE.md) is
 the same as [that found in their repository](https://github.com/allenai/allennlp/blob/main/STYLE.md).
 
 
-# Main Components:
+# Install Instructions
 
-1. `allennlp compose`: Command that uses Hydra to compose a config from multiple 
-YAML files. 
+```shell
+pip install allennlp-hydra
+echo allennlp_hydra >> ~.allennlp_plugins
+```
 
-2. `allennlp fill-config`: Command to fill a config with the default values it 
-does not specify.
+The second line adds `allennlp-hydra` to the allennlp plugins file so that it 
+can globally be recognized.
+
+# Basic Guide
+
+Coming soon
