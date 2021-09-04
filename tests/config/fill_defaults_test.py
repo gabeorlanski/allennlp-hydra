@@ -72,6 +72,12 @@ class E(A):
         super(E, self).__init__("This", "Empty", 3)
 
 
+@A.register("F")
+class F(A):
+    def __init__(self, **kwargs):
+        pass
+
+
 class TestFillDefaults(BaseTestCase):
     """
     Tests for the functions in `allennlp_hydra.config.fill_defaults`.
@@ -298,3 +304,13 @@ class TestFillDefaults(BaseTestCase):
             "namespace": "tokens",
             "initializer": {"regexes": None, "prevent_regexes": None},
         }
+
+    @pytest.mark.parametrize(
+        "input_cls, expected",
+        [[B, ["arg_a", "arg_c"]], [E, []], [F, []]],
+        ids=["with args", "no args", "no_kwargs"],
+    )
+    def test_get_positional_arguments(self, input_cls, expected):
+        result = fill_defaults.get_positional_arguments(input_cls)
+
+        assert list(result) == expected

@@ -1,7 +1,7 @@
 """
 Module for adding arguments and their default values to a config.
 """
-from typing import Dict, Union, Any, get_args
+from typing import Dict, Union, Any, get_args, Iterable
 
 from copy import deepcopy
 import inspect
@@ -45,7 +45,7 @@ def fill_config_with_default_values(
 
     # Returns
 
-    `Dict` The filled config.
+    cfg_with_defaults: `Dict` The filled config with defaults.
     """
     # Copy to avoid mutable changes
     if isinstance(config, Params):
@@ -65,7 +65,6 @@ def fill_config_with_default_values(
     init_params = inspect.signature(class_to_use)
 
     output_config = deepcopy(config_dict)
-
     for parameter in init_params.parameters.values():
         # Positional parameters do not have default values, so we skip them.
         if parameter.default == inspect.Parameter.empty:
@@ -130,6 +129,7 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
             # it a day.
             return parameter.default
 
+        cfg_dict = None
         if is_subclass_of_registrable and isinstance(
             parameter.default, annotation_type
         ):
@@ -155,9 +155,7 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
                     f"'{parameter_default_class.__name__}' was never" f" registered."
                 )
 
-            return fill_config_with_default_values(
-                annotation_type, {"type": registered_name}
-            )
+            cfg_dict = {"type": registered_name}
         elif is_subclass_of_registrable and isinstance(parameter.default, Lazy):
             logger.warning(
                 f"{parameter.name} has a Lazy object for its "
@@ -165,11 +163,13 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
                 f" be handled as getting the arguments for the"
                 f" default annotation."
             )
-            return fill_config_with_default_values(
-                annotation_type, {"type": annotation_type.default_implementation}
-            )
+
+            cfg_dict = {"type": annotation_type.default_implementation}
         elif not is_subclass_of_registrable and issubclass(annotation_type, FromParams):
-            return fill_config_with_default_values(annotation_type, {})
+            cfg_dict = {}
+
+        if cfg_dict is not None:
+            return fill_config_with_default_values(annotation_type, cfg_dict)
 
     # No annotation found or it is not a registrable, so return the default
     # value.
@@ -204,3 +204,15 @@ def get_annotation_class(parameter: inspect.Parameter) -> Union[type, None]:
 
     # Otherwise return the found type.
     return annotation_args[0]
+
+
+def get_positional_arguments(cls_type: FromParams) -> Iterable[str]:
+    # Get the init parameters from the underlying class of `initialized_class`
+    init_params = inspect.signature(cls_type)
+
+    for parameter in init_params.parameters.values():
+        if (
+            parameter.default == inspect.Parameter.empty
+            and parameter.kind != inspect.Parameter.VAR_KEYWORD
+        ):
+            yield parameter.name
