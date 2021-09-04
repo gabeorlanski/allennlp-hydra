@@ -16,8 +16,10 @@ the same as [that found in their repository](https://github.com/allenai/allennlp
 
 # Install Instructions
 
+Clone the repo
+
 ```shell
-pip install allennlp-hydra
+pip install .
 echo allennlp_hydra >> ~.allennlp_plugins
 ```
 
