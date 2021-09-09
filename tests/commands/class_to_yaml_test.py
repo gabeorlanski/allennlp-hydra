@@ -40,10 +40,10 @@ class TestClassToYaml(BaseTestCase):
             [
                 "DatasetReader",
                 {
-                    "type": "sequence_tagging",
+                    "type"              : "sequence_tagging",
                     "word_tag_delimiter": "###",
-                    "token_delimiter": None,
-                    "token_indexers": None,
+                    "token_delimiter"   : None,
+                    "token_indexers"    : None,
                 },
             ],
             ["DatasetReader", {"type": "multitask", "readers": "???"}],
@@ -60,12 +60,13 @@ class TestClassToYaml(BaseTestCase):
 
         assert self.TEST_DIR.joinpath(f"{expected['type']}.yaml").exists()
 
-        saved_file = yaml.load(
-            self.TEST_DIR.joinpath(f"{expected['type']}.yaml").open(
+        with self.TEST_DIR.joinpath(f"{expected['type']}.yaml").open(
                 "r", encoding="utf-8"
-            ),
-            yaml.Loader,
-        )
+        ) as result_file:
+            saved_file = yaml.load(
+                result_file,
+                yaml.Loader,
+            )
 
         assert result == saved_file
         assert result == expected

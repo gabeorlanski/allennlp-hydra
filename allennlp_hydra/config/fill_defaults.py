@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def fill_config_with_default_values(
-    base_class: Union[FromParams, Registrable], config: Union[Dict, Params]
+        base_class: Union[FromParams, Registrable], config: Union[Dict, Params]
 ) -> Dict:
     """
     Fill a `config` with the arguments and their default values from a
@@ -30,21 +30,16 @@ def fill_config_with_default_values(
     [`inspect`](https://docs.python.org/3/library/inspect.html) module.
 
     # Parameters
-
     base_class: `Union[FromParams, Registrable]`
         The base class that you want to use to fill the `config` with the
         arguments and their default values. These arguments are for the
         `base_class.__init__` function.
-
     config: `Union[Dict, Params]`
         The configuration dict to fill with the defaults. It does **NOT** make
         any changes to the mutable data but instead uses `deepcopy` to copy it
         to a new object.
-
         Existing keys will not be overwritten.
-
     # Returns
-
     cfg_with_defaults: `Dict` The filled config with defaults.
     """
     # Copy to avoid mutable changes
@@ -52,6 +47,12 @@ def fill_config_with_default_values(
         config_dict = config.params
     else:
         config_dict = config
+
+    # This is a band-aid hack for when there are complex type annotations that
+    # are too difficult to handle (Nested dictionaries), we instead just return
+    # the config as is.
+    if base_class is None:
+        return config
 
     # Check if we need to use the default or not.
     if issubclass(base_class, Registrable):
@@ -102,22 +103,20 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
 
     If there is a type annotation, check if it is a subclass of Registrable. If
     that is the case, check if the default value is an instance of that class.
+
     If it is, then recurse. Otherwise continue. Handles the case where the
     default value is an initialized registrable. We also find what name the
     class was registered as to add that as the `type` value.
 
     # Parameters
-
         parameter: `inspect.Parameter`
             The parameter to get the default value of.
 
     # Returns
-
     `Any` The default value of the parameter.
     """
     if parameter.annotation is not None:
         # Annotation found, check if it is a Registrable.
-
         annotation_type = get_annotation_class(parameter)
         if annotation_type is None:
             return parameter.default
@@ -131,7 +130,7 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
 
         cfg_dict = None
         if is_subclass_of_registrable and isinstance(
-            parameter.default, annotation_type
+                parameter.default, annotation_type
         ):
             # Reverse lookup what the class was registered as. We do need to
             # access the protected `_registry` attribute of registrable, but
@@ -179,16 +178,11 @@ def get_default_value_for_parameter(parameter: inspect.Parameter) -> Any:
 def get_annotation_class(parameter: inspect.Parameter) -> Union[type, None]:
     """
     Get the class of the annotation.
-
     # Parameters
-
         parameter: `inspect.Parameter`
             The parameter to get the class of.
-
     # Returns
-
     `Union[type, None]` The type or None.
-
     """
     # If the type is a `_GenericAlias`, we care what the arguments are inside.
     # Thus, we get the annotation args. If it is empty, it is not a
@@ -212,7 +206,7 @@ def get_positional_arguments(cls_type: FromParams) -> Iterable[str]:
 
     for parameter in init_params.parameters.values():
         if (
-            parameter.default == inspect.Parameter.empty
-            and parameter.kind != inspect.Parameter.VAR_KEYWORD
+                parameter.default == inspect.Parameter.empty
+                and parameter.kind != inspect.Parameter.VAR_KEYWORD
         ):
             yield parameter.name

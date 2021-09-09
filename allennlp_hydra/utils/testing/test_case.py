@@ -40,3 +40,4 @@ class BaseTestCase:
             logging.INFO
         )
         logging.getLogger("urllib3.connectionpool").disabled = True
+

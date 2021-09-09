@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class ClassToYaml(Subcommand):
     @overrides
     def add_subparser(
-        self, parser: argparse._SubParsersAction
+            self, parser: argparse._SubParsersAction
     ) -> argparse.ArgumentParser:
         description = """Convert a registered class to its YAML representation"""
         subparser = parser.add_parser(
@@ -37,8 +37,8 @@ class ClassToYaml(Subcommand):
             "cls_name",
             type=str,
             help="Name the class was registered with. This"
-            " is will be used as the name of the "
-            "created `.yaml` file.",
+                 " is will be used as the name of the "
+                 "created `.yaml` file.",
         )
 
         subparser.add_argument(
@@ -51,8 +51,8 @@ class ClassToYaml(Subcommand):
             required=True,
             type=str,
             help="Directory to save the file to. The name of the file will "
-            "be `{cls_name}.json`. All non alphanumeric and `_` characters "
-            "will be replaced with `_`.",
+                 "be `{cls_name}.json`. All non alphanumeric and `_` characters "
+                 "will be replaced with `_`.",
         )
 
         subparser.add_argument(
@@ -77,7 +77,7 @@ def class_to_yaml_from_args(args: argparse.Namespace) -> Dict:
 
 
 def class_to_yaml(
-    cls_name: str, base_cls_name: str, serialization_dir: str, force: bool = False
+        cls_name: str, base_cls_name: str, serialization_dir: str, force: bool = False
 ) -> Dict:
     print(f"Looking for the '{base_cls_name}' registered as {cls_name}")
     base_class = None
@@ -115,8 +115,8 @@ def class_to_yaml(
     out_path = serialization_dir.joinpath(f"{file_name}.yaml")
     if out_path.exists() and not force:
         raise ValueError(f"{out_path} already exists. use --force to override.")
-
-    yaml.dump(config_for_class, out_path.open("w", encoding="utf-8"), yaml.Dumper)
+    with out_path.open("w", encoding="utf-8") as out_file:
+        yaml.dump(config_for_class, out_file, yaml.Dumper)
 
     print(f"Config for {base_cls_name}.{cls_name}:")
     print("")

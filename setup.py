@@ -17,8 +17,8 @@ setuptools.setup(
         exclude=["*.tests", "*.tests.*", "tests.*", "tests", "test_*"],
     ),
     project_urls={
-        "Documentation": "https://allennlphydra.readthedocs.io/en/stable",
-        "Source Code": "https://github.com/gabeorlanski/pathml",
+        "Documentation": "https://github.com/gabeorlanski/allennlp-hydra",
+        "Source Code": "https://github.com/gabeorlanski/allennlp-hydra",
     },
     install_requires=[
         "allennlp>=2.6.0",

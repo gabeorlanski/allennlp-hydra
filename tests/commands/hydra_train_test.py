@@ -72,6 +72,7 @@ class TestHydraTrainCommand(BaseTestCase):
         saved_config = json.loads(serial_dir.joinpath("config.json").read_text("utf-8"))
         assert saved_config == simple_tagger_config
 
+    @pytest.mark.filterwarnings("ignore:.*unclosed file.*")
     def test_hydra_train_same_allennlp_train(self, simple_tagger_config, train_args):
         if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
             os.chdir(self.PROJECT_ROOT)
@@ -112,6 +113,7 @@ class TestHydraTrainCommand(BaseTestCase):
 
             assert allennlp_metrics[k] == v, k
 
+    @pytest.mark.filterwarnings("ignore:.*unclosed file.*")
     @pytest.mark.parametrize("serialization_arg", ["-s", "--serialization-dir"])
     @pytest.mark.parametrize("override_arg", ["-o", "--overrides", None])
     def test_cli_args(self, serialization_arg, override_arg):
@@ -145,6 +147,7 @@ class TestHydraTrainCommand(BaseTestCase):
         assert args.serialization_dir == "serialization_dir"
         assert args.overrides == expected_overrides
 
+    @pytest.mark.filterwarnings("ignore:.*unclosed file.*")
     def test_fill_defaults_same_model(self, simple_tagger_config, train_args):
         if os.getcwd() != str(self.PROJECT_ROOT.absolute()):
             os.chdir(self.PROJECT_ROOT)
@@ -185,3 +188,10 @@ class TestHydraTrainCommand(BaseTestCase):
                 continue
 
             assert allennlp_metrics[k] == v, k
+
+        from allennlp.common.tqdm import logger as tqdm_logger
+        for handler in tqdm_logger.handlers:
+            try:
+                handler.close()
+            except:
+                pass
