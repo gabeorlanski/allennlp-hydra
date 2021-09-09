@@ -4,8 +4,8 @@ https://github.com/allenai/allennlp-models/blob/main/allennlp_models/version.py
 """
 _MAJOR = "0"
 _MINOR = "0"
-_PATCH = "6"
+_PATCH = "7"
 
-VERSION_SHORT = "{0}.{1}".format(_MAJOR, _MINOR)
-VERSION = "{0}.{1}.{2}".format(_MAJOR, _MINOR, _PATCH)
+VERSION_SHORT = f"{_MAJOR}.{_MINOR}"
+VERSION = f"{VERSION_SHORT}.{_PATCH}"
 __version__ = VERSION
