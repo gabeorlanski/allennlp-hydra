@@ -3,7 +3,7 @@ from typing import List, Dict
 import pytest
 
 from allennlp.common import Registrable, Params
-from allennlp.data import DataLoader
+from allennlp.data import DataLoader, DatasetReader
 from allennlp.training import Trainer
 from allennlp.models import Model
 
@@ -103,7 +103,7 @@ class TestFillDefaults(BaseTestCase):
         ids=["empty", "full", "nested", "nested_empty"],
     )
     def test_fill_config(self, cfg, expected):
-        result = fill_defaults.fill_config_with_default_values(A, Params(cfg))
+        result = fill_defaults.fill_config_with_default_values(A, cfg)
 
         assert result == expected
 
@@ -272,6 +272,40 @@ class TestFillDefaults(BaseTestCase):
             "type": "no-annotation-class",
             "a"   : {"B": ["C"]},
             "b"   : None
+        }
+
+    def test_nested_params_object(self):
+        result = fill_defaults.fill_config_with_default_values(A, {
+            "type": "no-annotation-class", "a": {"B": {"C": {"D": "E"}}}
+        })
+
+        assert not isinstance(result['a']['B'], Params)
+        assert result == {
+            "type": "no-annotation-class",
+            "a"   : {"B": {"C": {"D": "E"}}},
+            "b"   : None
+        }
+
+    def test_fill_dataset_reader_simple(self):
+        result = fill_defaults.fill_config_with_default_values(
+            DatasetReader,
+            {
+                "type"          : "babi",
+                "token_indexers": {
+                    "tokens": {
+                        "namespace": "source_tokens"
+                    }
+                }
+            },
+        )
+        assert result == {
+            "type"          : "babi",
+            "keep_sentences": False,
+            "token_indexers": {
+                "tokens": {
+                    "namespace": "source_tokens"
+                }
+            }
         }
 
 

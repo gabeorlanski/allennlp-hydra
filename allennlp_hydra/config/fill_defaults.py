@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def fill_config_with_default_values(
-        base_class: Union[FromParams, Registrable], config: Union[Dict, Params]
+        base_class: Union[FromParams, Registrable], config: Dict
 ) -> Dict:
     """
     Fill a `config` with the arguments and their default values from a
@@ -34,7 +34,7 @@ def fill_config_with_default_values(
         The base class that you want to use to fill the `config` with the
         arguments and their default values. These arguments are for the
         `base_class.__init__` function.
-    config: `Union[Dict, Params]`
+    config: `Dict`
         The configuration dict to fill with the defaults. It does **NOT** make
         any changes to the mutable data but instead uses `deepcopy` to copy it
         to a new object.
@@ -42,17 +42,17 @@ def fill_config_with_default_values(
     # Returns
     cfg_with_defaults: `Dict` The filled config with defaults.
     """
-    # Copy to avoid mutable changes
     if isinstance(config, Params):
-        config_dict = config.params
-    else:
-        config_dict = config
+        raise TypeError("Params object cannot be passed to fill defaults")
+
+    # Copy to avoid mutable changes
+    config_dict = deepcopy(config)
 
     # This is a band-aid hack for when there are complex type annotations that
     # are too difficult to handle (Nested dictionaries), we instead just return
     # the config as is.
     if base_class is None:
-        return config
+        return config_dict
 
     # Check if we need to use the default or not.
     if issubclass(base_class, Registrable):
@@ -90,7 +90,7 @@ def fill_config_with_default_values(
 
         output_config[parameter.name] = dict(
             fill_config_with_default_values(
-                get_annotation_class(parameter), Params(config_dict[parameter.name])
+                get_annotation_class(parameter), config_dict[parameter.name]
             )
         )
 
