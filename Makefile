@@ -64,6 +64,10 @@ clean :
 	find . | grep -E '(\.mypy_cache|__pycache__|\.pyc|\.pyo$$)' | xargs rm -rf
 
 
+.PHONY : serve-docs
+serve-docs : build-all-api-docs $(MD_DOCS_CONF) $(MD_DOCS) $(MD_DOCS_EXTRAS)
+	mkdocs serve --dirtyreload
+
 .PHONY : typecheck
 typecheck :
 	mypy allennlp_hydra tests --cache-dir=/dev/null
