@@ -1,5 +1,7 @@
 # AllenNLP-Hydra
 
+[Documentation](https://gabeorlanski.github.io/allennlp-hydra/)
+
 Plugin For [AllenNLP](https://github.com/allenai/allennlp) that enables 
 composing configs through the use of the 
 [Hydra Library from Facebook Research](https://github.com/facebookresearch/hydra).
@@ -14,17 +16,17 @@ guide](https://github.com/gabeorlanski/allennlp-hydra/blob/master/STYLE.md) is
 the same as [that found in their repository](https://github.com/allenai/allennlp/blob/main/STYLE.md).
 
 
+
 # Install Instructions
 
-Clone the repo
-
 ```shell
-pip install .
+pip install allennlp-hydra
 echo allennlp_hydra >> ~.allennlp_plugins
 ```
 
 The second line adds `allennlp-hydra` to the allennlp plugins file so that it 
 can globally be recognized.
+
 
 # Basic Guide
 
