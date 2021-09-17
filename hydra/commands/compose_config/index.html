@@ -1,0 +1,890 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AllenNLP Hydra is a plugin to make allennlp work with hydra.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://gabeorlanski.github.io/allennlp-hydra/hydra/commands/compose_config/">
+      
+      <link rel="icon" href="../../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.2.3">
+    
+    
+      
+        <title>compose_config - AllenNLP Hydra v0.0.7</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7f47774.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+    
+      
+
+  
+
+
+  
+
+  
+
+
+  <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-KD7SFGK0CW"),document.addEventListener("DOMContentLoaded",function(){"undefined"!=typeof location$&&location$.subscribe(function(t){gtag("config","G-KD7SFGK0CW",{page_path:t.pathname})})})</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KD7SFGK0CW"></script>
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="grey">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#composeconfig" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="AllenNLP Hydra v0.0.7" class="md-header__button md-logo" aria-label="AllenNLP Hydra v0.0.7" data-md-component="logo">
+      
+  <img src="../../../img/favicon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AllenNLP Hydra v0.0.7
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              compose_config
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AllenNLP Hydra v0.0.7" class="md-nav__button md-logo" aria-label="AllenNLP Hydra v0.0.7" data-md-component="logo">
+      
+  <img src="../../../img/favicon.ico" alt="logo">
+
+    </a>
+    AllenNLP Hydra v0.0.7
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/gabeorlanski/allennlp-hydra" class="md-nav__link">
+        Repository
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Hydra
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Hydra" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hydra
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" checked>
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        commands
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="commands" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          commands
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_to_yaml/" class="md-nav__link">
+        class_to_yaml
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          compose_config
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        compose_config
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#composeconfig" class="md-nav__link">
+    ComposeConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="ComposeConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_subparser" class="md-nav__link">
+    add_subparser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose_config_from_args" class="md-nav__link">
+    compose_config_from_args
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose_config" class="md-nav__link">
+    compose_config
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hydra_train/" class="md-nav__link">
+        hydra_train
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        config
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="config" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          config
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config/fill_defaults/" class="md-nav__link">
+        fill_defaults
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        utils
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="utils" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          utils
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1" type="checkbox" id="__nav_3_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1">
+        testing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="testing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          testing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/testing/test_case/" class="md-nav__link">
+        test_case
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/testing/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        CHANGELOG
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://raw.githubusercontent.com/gabeorlanski/allennlp-hydra/main/LICENSE" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#composeconfig" class="md-nav__link">
+    ComposeConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="ComposeConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_subparser" class="md-nav__link">
+    add_subparser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose_config_from_args" class="md-nav__link">
+    compose_config_from_args
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose_config" class="md-nav__link">
+    compose_config
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>compose_config</h1>
+                
+                <div>
+ <p class="alignleft"><i>allennlp_hydra</i><i>.commands</i><strong>.compose_config</strong></p>
+ <p class="alignright"><a class="sourcelink" href="https://allennlphydra.readthedocs.io/commands/compose_config.py">[SOURCE]</a></p>
+</div>
+<div style="clear: both;"></div>
+
+<hr />
+<p>The <code>compose</code> command creates an AllenNLP config by composing a set of <code>yaml</code> files with Hydra's
+<a href="https://hydra.cc/docs/advanced/compose_api"><code>Compose API</code></a>. Overriding
+using Hydra's <a href="https://hydra.cc/docs/advanced/compose_api"><code>Override Grammar</code></a>
+is also supported.</p>
+<h4 id="allennlp_hydra.commands.compose_config.parameters">Parameters<a class="headerlink" href="#allennlp_hydra.commands.compose_config.parameters" title="Permanent link">&para;</a></h4>
+
+<ul>
+<li>
+<p><strong>config_path</strong> : <code>Union[str, PathLike]</code> <br>
+    Path to the root config directory.</p>
+</li>
+<li>
+<p><strong>config_name</strong> : <code>str</code> <br>
+    The name of the root config file. Do NOT include the <code>.yaml</code>.</p>
+</li>
+<li>
+<p><strong>job_name</strong> : <code>str</code> <br>
+    The job name. This is passed to Hydra and is not used here.</p>
+</li>
+<li>
+<p><strong>-s/--serialization-dir</strong> : <code>Union[str, PathLike]</code> <br>
+    The directory where the new AllenNLP config will be saved to. The name used
+     for saving will be the <code>config_name</code> and it will be a <code>.json</code> file.</p>
+</li>
+<li>
+<p><strong>-o/--overrides</strong> : <code>List[str]</code>, optional (default = <code>[]</code>) <br>
+    Keyword arguments passed will be used as a list of overrides using Hydra's
+    override grammar for the config.</p>
+<p>Example usage:</p>
+<p><div class="highlight"><pre><span></span><code>allennlp compose conf config example -s example --overrides <span class="nv">A</span><span class="o">=</span>B <span class="nv">C</span><span class="o">=</span><span class="s2">&quot;D&quot;</span>
+</code></pre></div>
+Will be interpreted as overrides <code>['A=B', 'C="D"']</code></p>
+</li>
+</ul>
+<h4 id="allennlp_hydra.commands.compose_config.example">Example<a class="headerlink" href="#allennlp_hydra.commands.compose_config.example" title="Permanent link">&para;</a></h4>
+
+<p>Say you have the following directory structure:</p>
+<div class="highlight"><pre><span></span><code>project
++-- conf
+|   +-- dataset_readers
+|   |   +-- A.yaml
+|   |   +-- B.yaml
+|   +-- models
+|   |   +-- C.yaml
+|   |   +-- D.yaml
+|   +-- config.yaml
++-- experiments
+</code></pre></div>
+<p><code>conf/dataset_readers/A.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code>type: A
+start_token: &lt;s&gt;
+end_token: &lt;/s&gt;
+</code></pre></div>
+<p><code>conf/dataset_readers/B.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code>type: B
+start_token: [CLS]
+end_token: [SEP]
+</code></pre></div>
+<p><code>conf/models/C.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code>type: C
+layers: 5
+</code></pre></div>
+<p><code>conf/models/D.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">D</span>
+<span class="nt">input_dim</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+<p><code>config.yaml</code>
+<div class="highlight"><pre><span></span><code>defaults:
+    - dataset_reader: A
+    - model: C
+
+debug: false
+</code></pre></div></p>
+<p>Then running the command
+<div class="highlight"><pre><span></span><code>allennlp compose conf config example -s experiments
+</code></pre></div>
+Produces the file <code>project/experiments/config.json</code>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;dataset_reader&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;start_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;end_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;/s&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;layers&quot;</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;debug&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>If you want to override the config and use the <code>B</code> dataset reader with the <code>D</code>
+model, you would modify the previous command:
+<div class="highlight"><pre><span></span><code>allennlp compose conf config example -s experiments -o <span class="nv">model</span><span class="o">=</span>D <span class="nv">dataset_reader</span><span class="o">=</span>B
+</code></pre></div>
+Produces the file <code>project/experiments/config.json</code>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;dataset_reader&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;start_token&quot;</span><span class="p">:</span> <span class="s2">&quot;[CLS]&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;end_token&quot;</span><span class="p">:</span> <span class="s2">&quot;[SEP]&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;input_dim&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;debug&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>And if you wanted to change <code>input_dim</code> of model <code>D</code> to 25:
+<div class="highlight"><pre><span></span><code>allennlp compose conf config example -s experiments -o <span class="nv">model</span><span class="o">=</span>D <span class="nv">dataset_reader</span><span class="o">=</span>B model.input_dim<span class="o">=</span><span class="m">25</span>
+</code></pre></div></p>
+<p>Produces the file <code>project/experiments/config.json</code>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;dataset_reader&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;start_token&quot;</span><span class="p">:</span> <span class="s2">&quot;[CLS]&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;end_token&quot;</span><span class="p">:</span> <span class="s2">&quot;[SEP]&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;input_dim&quot;</span><span class="p">:</span> <span class="mi">25</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;debug&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><a name=".allennlp_hydra.commands.compose_config.ComposeConfig"></a></p>
+<h2 id="composeconfig">ComposeConfig<a class="headerlink" href="#composeconfig" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nd">@Subcommand</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;compose&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ComposeConfig</span><span class="p">(</span><span class="n">Subcommand</span><span class="p">)</span>
+</code></pre></div>
+<p><a name=".allennlp_hydra.commands.compose_config.ComposeConfig.add_subparser"></a></p>
+<h3 id="add_subparser">add_subparser<a class="headerlink" href="#add_subparser" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ComposeConfig</span><span class="p">(</span><span class="n">Subcommand</span><span class="p">):</span>
+ <span class="o">|</span> <span class="o">...</span>
+ <span class="o">|</span> <span class="nd">@overrides</span>
+ <span class="o">|</span> <span class="k">def</span> <span class="nf">add_subparser</span><span class="p">(</span>
+ <span class="o">|</span>     <span class="bp">self</span><span class="p">,</span>
+ <span class="o">|</span>     <span class="n">parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span>
+ <span class="o">|</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span>
+</code></pre></div>
+<p><a name=".allennlp_hydra.commands.compose_config.compose_config_from_args"></a></p>
+<h2 id="compose_config_from_args">compose_config_from_args<a class="headerlink" href="#compose_config_from_args" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compose_config_from_args</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span>
+</code></pre></div>
+<p>Wrapper for compose so that it can be called with <code>argparse</code> arguments from
+the CLI.</p>
+<h4 id="compose_config_from_args.parameters">Parameters<a class="headerlink" href="#compose_config_from_args.parameters" title="Permanent link">&para;</a></h4>
+
+<ul>
+<li><strong>args</strong> : <code>argparse.Namespace</code> <br>
+    The parsed args from <code>argparse</code>.</li>
+</ul>
+<h4 id="compose_config_from_args.returns">Returns<a class="headerlink" href="#compose_config_from_args.returns" title="Permanent link">&para;</a></h4>
+
+<div class="highlight"><pre><span></span><code>The composed config.
+</code></pre></div>
+<p><a name=".allennlp_hydra.commands.compose_config.compose_config"></a></p>
+<h2 id="compose_config">compose_config<a class="headerlink" href="#compose_config" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compose_config</span><span class="p">(</span>
+    <span class="n">config_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">],</span>
+    <span class="n">config_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">job_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">serialization_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config_overrides</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">fill_defaults</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span>
+</code></pre></div>
+<p>Create an AllenNLP config by composing a set of <code>yaml</code> files with Hydra's
+<a href="https://hydra.cc/docs/advanced/compose_api"><code>Compose API</code></a>. Overriding
+using Hydra's <a href="https://hydra.cc/docs/advanced/compose_api"><code>Override Grammar</code></a>
+is also supported.</p>
+<h4 id="compose_config.parameters">Parameters<a class="headerlink" href="#compose_config.parameters" title="Permanent link">&para;</a></h4>
+
+<ul>
+<li>
+<p><strong>config_path</strong> : <code>Union[str, PathLike]</code> <br>
+    Path to the root config directory.</p>
+</li>
+<li>
+<p><strong>config_name</strong> : <code>str</code> <br>
+    The name of the root config file.</p>
+</li>
+<li>
+<p><strong>job_name</strong> : <code>str</code> <br>
+    The job name. This is passed to Hydra and is not used here.</p>
+</li>
+<li>
+<p><strong>serialization_dir</strong> : <code>Optional[Union[str, PathLike]]</code>, optional (default = <code>None</code>) <br>
+    If this is passed, it is the directory where the new AllenNLP config
+    will be saved to. The name used for saving will be the <code>config_name</code> and
+     it will be a <code>.json</code> file.</p>
+</li>
+<li>
+<p><strong>config_overrides</strong> : <code>List[str]</code>, optional (default = <code>[]</code>) <br>
+    List of overrides using Hydra's override grammar for the config.</p>
+</li>
+<li>
+<p><strong>fill_defaults</strong> : <code>bool</code>, optional (default = <code>False</code>) <br>
+    Add arguments and their default values to the config if they are not
+    specified.</p>
+</li>
+</ul>
+<h4 id="compose_config.returns">Returns<a class="headerlink" href="#compose_config.returns" title="Permanent link">&para;</a></h4>
+
+<ul>
+<li><code>Dict</code> <br>
+    The dictionary config generated by Hydra.</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../class_to_yaml/" class="md-footer__link md-footer__link--prev" aria-label="Previous: class_to_yaml" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              class_to_yaml
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../hydra_train/" class="md-footer__link md-footer__link--next" aria-label="Next: hydra_train" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              hydra_train
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.29db7785.min.js"></script>
+      
+    
+  </body>
+</html>
