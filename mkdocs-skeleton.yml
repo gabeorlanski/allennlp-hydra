@@ -39,3 +39,8 @@ markdown_extensions:
 - extra
 - pymdownx.highlight
 - pymdownx.superfences
+
+extra:
+  analytics:
+    provider: google
+    property: G-KD7SFGK0CW
