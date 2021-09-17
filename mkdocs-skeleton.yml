@@ -43,4 +43,4 @@ markdown_extensions:
 extra:
   analytics:
     provider: google
-    property: G-KD7SFGK0CW
+    property: "G-KD7SFGK0CW"
